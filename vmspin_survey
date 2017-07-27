@@ -1,0 +1,27 @@
+- name: create the VM
+  hosts: localhost
+  connection: local
+  tasks:
+  - vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: no
+      datacenter: "{{ datacenter }}"
+      name: "{{ Hostname }}"
+      state: poweredon
+      disk:
+      - size_gb: "{{ Disk_Size }}"
+        type: thin
+        datastore: "{{ datastore }}"
+      hardware:
+        memory_mb: "{{ Memory_Size }}"
+        num_cpus: "{{ Number_Of_CPU }}"
+        scsi: paravirtual
+      networks:
+      - name: VM Network
+        ip: "{{ IP_Address }}"
+        netmask: "{{ Netmask }}"
+      template: "{{ Template_Name }}"
+      wait_for_ip_address: yes
+    register: deploy
